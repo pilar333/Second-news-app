@@ -1,14 +1,24 @@
 <!doctype html>
 <html lang="en">
     <head>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
         <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     </head>
     <body>
+        <nav>
+            <a href="http://first-news-app.readthedocs.org/">
+                <img src="{{ url_for('static', filename='irelogo.png') }}">
+            </a>
+        </nav>
+        <header>
+            <h1>These are the 60 people who died during the L.A. riots</h1>
+            <div class="byline">
+                By <a href="http://first-news-app.readthedocs.org/">The First News App Tutorial</a>
+            </div>
+        </header>
         <div id="map" style="width:100%; height:300px;"></div>
-
-        <h1>Deaths during the L.A. riots</h1>
-         <table border=1 cellpadding=7>
+        <table border=1 cellpadding=7>
             <tr>
                 <th>Name</th>
                 <th>Date</th>
@@ -18,9 +28,9 @@
                 <th>Gender</th>
                 <th>Race</th>
             </tr>
-            {% for obj in object_list %}
+        {% for obj in object_list %}
             <tr>
-                <td><a href="{{ obj.id}}">{{obj.full_name}}</a></td>
+                <td><a href="{{ obj.id }}/">{{ obj.full_name }}</a></td>
                 <td>{{ obj.date }}</td>
                 <td>{{ obj.type }}</td>
                 <td>{{ obj.address }}</td>
@@ -28,7 +38,7 @@
                 <td>{{ obj.gender }}</td>
                 <td>{{ obj.race }}</td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </table>
         <script type="text/javascript">
             var map = L.map('map').setView([34.055, -118.35], 9);
@@ -38,7 +48,7 @@
                 subdomains: ['otile1','otile2','otile3','otile4']
             });
             map.addLayer(mapquestLayer);
-              var data = {
+            var data = {
               "type": "FeatureCollection",
               "features": [
                 {% for obj in object_list %}
@@ -56,7 +66,7 @@
                 {% endfor %}
               ]
             };
-               var dataLayer = L.geoJson(data, {
+            var dataLayer = L.geoJson(data, {
                 onEachFeature: function(feature, layer) {
                     layer.bindPopup(
                         '<a href="' + feature.properties.id + '/">' +
